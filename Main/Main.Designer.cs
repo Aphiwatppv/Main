@@ -37,6 +37,7 @@
             buttonAdd = new Button();
             buttonDelete = new Button();
             buttonEdit = new Button();
+            buttonExportCsv = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvServerConfig).BeginInit();
             SuspendLayout();
             // 
@@ -122,12 +123,23 @@
             buttonEdit.UseVisualStyleBackColor = true;
             buttonEdit.Click += buttonEdit_Click;
             // 
+            // buttonExportCsv
+            // 
+            buttonExportCsv.Location = new Point(1039, 302);
+            buttonExportCsv.Name = "buttonExportCsv";
+            buttonExportCsv.Size = new Size(186, 35);
+            buttonExportCsv.TabIndex = 9;
+            buttonExportCsv.Text = "Export Csv";
+            buttonExportCsv.UseVisualStyleBackColor = true;
+            buttonExportCsv.Click += buttonExportCsv_Click;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1291, 631);
+            Controls.Add(buttonExportCsv);
             Controls.Add(buttonEdit);
             Controls.Add(buttonDelete);
             Controls.Add(buttonAdd);
@@ -156,5 +168,6 @@
         private Button buttonAdd;
         private Button buttonDelete;
         private Button buttonEdit;
+        private Button buttonExportCsv;
     }
 }

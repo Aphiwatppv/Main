@@ -1,5 +1,7 @@
+using AdvancedLogging;
 using ConfigServices.Model;
 using ConfigServices.Service;
+using Main.HelpServices;
 using Main.Style;
 using Main.SubForm;
 using System.ComponentModel;
@@ -17,6 +19,9 @@ namespace Main
         private BindingList<ServerConfig> serversView;      // filtered view
         private BindingSource bindingSource;                // for the grid
 
+
+        private ILogger _log;
+
         public Main()
         {
             InitializeComponent();
@@ -26,9 +31,17 @@ namespace Main
 
         private void InitialSet()
         {
+            var logger = new LoggerBuilder().MinimumLevel(LogLevel.Debug).WriteToFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs"), "app").WriteToDebug().Build();
+            _log ??= new LoggerBuilder()
+    .MinimumLevel(LogLevel.Debug)
+    .WriteToFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs"), prefix: "ui", json: false, maxBytes: 2_000_000, retentionDays: 14)
+    .WriteToDebug(LogLevel.Debug)
+    .Build();
+
+
             // 1) Services
             appPaths = new AppPaths("Infineon", "EBS Investigation system");
-            serverConfigService = new ServerConfigService(appPaths);
+            serverConfigService = new ServerConfigService(appPaths, logger);
 
             // 2) Load data
             var loaded = serverConfigService.Load();
@@ -124,6 +137,16 @@ namespace Main
             ButtonStyler.ApplyButtonStyle(buttonAdd, styleType: "normal");
             ButtonStyler.ApplyButtonStyle(buttonDelete, styleType: "danger");
             ButtonStyler.ApplyButtonStyle(buttonEdit, styleType: "warning");
+            ButtonStyler.ApplyButtonStyle(buttonExportCsv, styleType: "normal");
+
+            UIStyler.ApplyLabelStyle(labelStatus, "normal");  // teal
+            //UIStyler.ApplyLabelStyle(lblWarning, "warning");
+            //UIStyler.ApplyLabelStyle(lblError, "danger");
+
+            // ComboBoxes
+            UIStyler.ApplyComboBoxStyle(comboBoxFilter, "normal");
+           // UIStyler.ApplyComboBoxStyle(cbxProcess, "warning");
+
         }
 
 
@@ -317,6 +340,39 @@ namespace Main
             {
                 MessageBox.Show(this, $"Deleted {ok} item(s). {fail} failed.", "Delete",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void buttonExportCsv_Click(object sender, EventArgs e)
+        {
+            using var sfd = new SaveFileDialog
+            {
+                Title = "Export servers to CSV",
+                Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*",
+                FileName = "servers.csv",
+                RestoreDirectory = true
+            };
+
+            if (sfd.ShowDialog(this) == DialogResult.OK)
+            {
+                var exportId = Guid.NewGuid();
+                using (_log.BeginScope(new Dictionary<string, object> { ["op"] = "csv-export", ["exportId"] = exportId }))
+                {
+                    _log.Info("CSV export started for {Count} row(s)", ("Count", serversView?.Count ?? 0));
+                    try
+                    {
+                        CsvHelper.ExportDataGridViewToCsv(dgvServerConfig, sfd.FileName);  // see below
+                        _log.Info("CSV export completed -> {Path}", ("Path", sfd.FileName));
+                        MessageBox.Show(this, "Export completed.", "CSV Export",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        _log.Error("CSV export failed -> {Path}", ex, ("Path", sfd.FileName));
+                        MessageBox.Show(this, ex.Message, "Export failed",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
             }
         }
     }
