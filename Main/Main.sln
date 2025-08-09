@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigServices", "..\Config
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdvancedLogging", "..\AdvancedLogging\AdvancedLogging.csproj", "{228C97A8-B957-4464-BEE6-3D21884E87EF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerConnection", "..\ServerConnection\ServerConnection.csproj", "{BE494D47-D469-4BEC-8F4A-0CFA41717B87}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{228C97A8-B957-4464-BEE6-3D21884E87EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{228C97A8-B957-4464-BEE6-3D21884E87EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{228C97A8-B957-4464-BEE6-3D21884E87EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE494D47-D469-4BEC-8F4A-0CFA41717B87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE494D47-D469-4BEC-8F4A-0CFA41717B87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE494D47-D469-4BEC-8F4A-0CFA41717B87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE494D47-D469-4BEC-8F4A-0CFA41717B87}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

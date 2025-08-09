@@ -140,12 +140,11 @@ namespace Main
             ButtonStyler.ApplyButtonStyle(buttonExportCsv, styleType: "normal");
 
             UIStyler.ApplyLabelStyle(labelStatus, "normal");  // teal
-            //UIStyler.ApplyLabelStyle(lblWarning, "warning");
-            //UIStyler.ApplyLabelStyle(lblError, "danger");
+
 
             // ComboBoxes
             UIStyler.ApplyComboBoxStyle(comboBoxFilter, "normal");
-           // UIStyler.ApplyComboBoxStyle(cbxProcess, "warning");
+
 
         }
 
@@ -361,7 +360,7 @@ namespace Main
                     _log.Info("CSV export started for {Count} row(s)", ("Count", serversView?.Count ?? 0));
                     try
                     {
-                        CsvHelper.ExportDataGridViewToCsv(dgvServerConfig, sfd.FileName);  // see below
+                        CsvHelper.ExportDataGridViewToCsv(dgvServerConfig, sfd.FileName); 
                         _log.Info("CSV export completed -> {Path}", ("Path", sfd.FileName));
                         MessageBox.Show(this, "Export completed.", "CSV Export",
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
