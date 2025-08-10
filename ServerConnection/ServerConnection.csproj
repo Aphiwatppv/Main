@@ -11,4 +11,8 @@
     <PackageReference Include="Oracle.ManagedDataAccess" Version="23.9.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AdvancedLogging\AdvancedLogging.csproj" />
+  </ItemGroup>
+
 </Project>
